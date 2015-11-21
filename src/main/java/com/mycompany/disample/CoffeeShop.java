@@ -16,6 +16,6 @@ public class CoffeeShop {
     @Inject BrewingMethod brewingMethod;
 
     public String brewCoffee() {
-        return brewingMethod.brew() + "が出来上がりました。";
+        return brewingMethod.brew() + "が出来上がりました [_]P";
     }
 }

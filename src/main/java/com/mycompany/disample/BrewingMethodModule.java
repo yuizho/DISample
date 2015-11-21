@@ -13,7 +13,7 @@ import dagger.Provides;
  *
  * @author yuizho
  */
-@Module(injects = CoffeeShop.class)
+@Module(injects = CoffeeShopApp.class)
 public class BrewingMethodModule {
     @Provides
     public BrewingMethod provideBrewingMethod() {

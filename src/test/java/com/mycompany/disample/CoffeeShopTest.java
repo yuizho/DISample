@@ -9,11 +9,11 @@ import dagger.Module;
 import dagger.ObjectGraph;
 import dagger.Provides;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 /**
@@ -21,17 +21,30 @@ import org.mockito.Mockito;
  * @author yuizho
  */
 public class CoffeeShopTest {
+    @Inject CoffeeShop coffeeShop;
+    @Inject BrewingMethod brewingMethod;
+
+    @Before
+    public void setUp() {
+        ObjectGraph.create(new BrewingMethodMockModule()).inject(this);
+    }
+
+    @Module(includes = BrewingMethodModule.class,
+            injects = CoffeeShopTest.class,
+            overrides = true)
+    static class BrewingMethodMockModule {
+        @Provides
+        @Singleton
+        public BrewingMethod provideBrewingMethod() {
+            return Mockito.mock(BrewingMethod.class);
+        }
+    }
+
     @Test
     public void testBrewCoffee() {
-        BrewingMethod brewingMethod = Mockito.mock(BrewingMethod.class);
         Mockito.when(brewingMethod.brew()).thenReturn("テストコーヒー");
-
-        CoffeeShop coffeeShop = new CoffeeShop();
-        ObjectGraph.create(new BrewingMethodMockModule(brewingMethod)).inject(coffeeShop);
-
         String result = coffeeShop.brewCoffee();
-
         Mockito.verify(brewingMethod, Mockito.times(1)).brew();
-        assertThat(result, is("テストコーヒーが出来上がりました。"));
+        assertThat(result, is("テストコーヒーが出来上がりました [_]P"));
     }
 }

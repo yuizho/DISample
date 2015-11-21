@@ -7,16 +7,23 @@
 package com.mycompany.disample;
 
 import dagger.ObjectGraph;
+import javax.inject.Inject;
 
 /**
  *
  * @author yuizho
  */
 public class CoffeeShopApp {
-    public static void main(String... args) {
-        CoffeeShop coffeeShop = new CoffeeShop();
-        // CoffeeShopクラスにSiphonオブジェクトをインジェクト
-        ObjectGraph.create(new BrewingMethodModule()).inject(coffeeShop);
+    @Inject CoffeeShop coffeeShop;
+
+    public void run() {
         System.out.println(coffeeShop.brewCoffee());
+    }
+
+    public static void main(String... args) {
+        CoffeeShopApp coffeeShopApp =
+                ObjectGraph.create(new BrewingMethodModule())
+                        .get(CoffeeShopApp.class);
+        coffeeShopApp.run();
     }
 }
