@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.disample;
 
 import dagger.Module;
@@ -16,23 +11,19 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-/**
- *
- * @author yuizho
- */
 public class CoffeeShopTest {
     @Inject CoffeeShop coffeeShop;
     @Inject BrewingMethod brewingMethod;
 
     @Before
     public void setUp() {
-        ObjectGraph.create(new BrewingMethodMockModule()).inject(this);
+        ObjectGraph.create(new TestModule()).inject(this);
     }
 
     @Module(includes = BrewingMethodModule.class,
             injects = CoffeeShopTest.class,
             overrides = true)
-    static class BrewingMethodMockModule {
+    static class TestModule {
         @Provides
         @Singleton
         public BrewingMethod provideBrewingMethod() {
